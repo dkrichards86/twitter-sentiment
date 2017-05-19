@@ -1,0 +1,5 @@
+dataset==0.8.0
+Flask==0.12.1
+gunicorn==19.7.1
+nltk==3.2.2
+tweepy==3.5.0

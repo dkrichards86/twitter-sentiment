@@ -1,0 +1,10 @@
+*.pyc
+
+venv/
+.c9/
+__pycache__/
+
+config.ini
+
+tweets/*
+databases/*.db
