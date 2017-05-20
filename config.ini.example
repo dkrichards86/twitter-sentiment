@@ -1,7 +1,8 @@
 [general]
 keywords = your,keywords,comma,separated    # All tweets in your stream with one or more of these keywords will be stashed
 chunk_size = 1000                           # Number of tweets to gather before stashing in a file
-database_path = path/to/database            # Path to your sqlite3 database
+database_path = /abosolute/path/to/database            # Path to your sqlite3 database
+tweet_dir = /absolute/path/to/tweets
 
 [keys]
 consumer_key = YOUR_CONSUMER_KEY            # Your app's twitter consumer key

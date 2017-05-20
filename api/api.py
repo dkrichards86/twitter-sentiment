@@ -1,9 +1,16 @@
+import os
 from flask import Flask, jsonify, g, make_response, request, current_app
 from functools import update_wrapper
 from flask.json import JSONEncoder
 from datetime import datetime, timedelta, date
 import dataset
 import decimal
+import configparser
+
+PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
+config = configparser.ConfigParser()
+config.read(PROJECT_ROOT + '/config.ini')
 
 
 class CustomJSONEncoder(JSONEncoder):
@@ -63,7 +70,7 @@ def before_request():
     db = getattr(g, 'db', None)
     
     if db is None:
-        db = g.db = dataset.connect('sqlite://///home/ubuntu/workspace/databases/tweets.db')
+        db = g.db = dataset.connect('sqlite:////{}'.format(config['general']['database_path']))
 
 @app.route('/', methods=['GET'])
 @crossdomain(origin='*')

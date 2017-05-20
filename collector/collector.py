@@ -1,12 +1,14 @@
+import os
 import sys
 import configparser
 import json
 from datetime import datetime
 import tweepy
 
+PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read(PROJECT_ROOT + '/config.ini')
 
 
 class TweetCollector(tweepy.StreamListener):
@@ -30,7 +32,7 @@ class TweetCollector(tweepy.StreamListener):
     def write_tweets(self):
         filename = datetime.now().strftime('%Y%m%d%H%M%S')
         
-        with open('tweets/{}.json'.format(filename), 'w') as f:
+        with open('{}/{}.json'.format(config['general']['tweet_dir'], filename), 'w') as f:
             json.dump(self.tweets, f)
             print("Wrote {}:".format(config['general']['chunk_size']))
             self.tweets = []

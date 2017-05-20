@@ -18,7 +18,7 @@ config.read('config.ini')
 
 class TweetProcessor():
     def __init__(self):
-        self.db = dataset.connect('sqlite:///{}'.format(config['general']['database_path']))
+        self.db = dataset.connect('sqlite:////{}'.format(config['general']['database_path']))
 
         self.vader = nltk.sentiment.vader.SentimentIntensityAnalyzer()
 
