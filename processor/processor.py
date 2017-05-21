@@ -12,8 +12,10 @@ import nltk
 url_re = re.compile(r'(https|http)?:\/\/(\w|\.|\/|\?|\=|\&|\%)*\b', flags=re.MULTILINE)
 tag_re = re.compile(r'(@|#)\w*\b', flags=re.MULTILINE)
 
+PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read(PROJECT_ROOT + '/config.ini')
 
 
 class TweetProcessor():
@@ -73,7 +75,8 @@ class TweetProcessor():
             'negative': 0
         }
         
-        file_set = [os.path.join('tweets', file) for file in os.listdir('tweets') if file.endswith(".json")]
+
+        file_set = [os.path.join(config['general']['tweet_dir'], file) for file in os.listdir(config['general']['tweet_dir']) if file.endswith(".json")]
         
         for path in file_set:
             with open(path) as f:
