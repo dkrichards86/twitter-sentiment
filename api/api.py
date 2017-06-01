@@ -90,8 +90,6 @@ def index():
            from_date = to_date
            to_date = stash
     
-    print(to_date)
-    print(from_date)
     query = """
         SELECT datetime, polarity, percent_positive, percent_negative, tweet_count
         FROM sentiment
@@ -103,5 +101,69 @@ def index():
     payload = []
     for row in result:
         payload.append(row)
+
+    return jsonify({'data': payload})
+
+@app.route('/average_polarity', methods=['GET'])
+@crossdomain(origin='*')
+def avg_polarity():
+    to_date = datetime.now()
+    to_date_param = request.args.get('to')
+    if to_date_param:
+       to_date = datetime.strptime(to_date_param, '%Y%m%d')
+      
+    from_date = to_date - timedelta(weeks = 1)
+    from_date_param = request.args.get('from')
+    if from_date_param:
+       from_date = datetime.strptime(from_date_param, '%Y%m%d')
+       
+       if from_date > to_date:
+           stash = from_date
+           from_date = to_date
+           to_date = stash
+    
+    query = """
+        SELECT avg(polarity) AS avg_polarity
+        FROM sentiment
+        WHERE datetime >= '{}'
+        AND datetime <= '{}'
+    """.format(from_date, to_date)
+
+    result = g.db.query(query)
+    payload = []
+    for row in result:
+        payload.append(round(row['avg_polarity'], 2))
+
+    return jsonify({'data': payload})
+    
+@app.route('/tweet_count', methods=['GET'])
+@crossdomain(origin='*')
+def tweet_count():
+    to_date = datetime.now()
+    to_date_param = request.args.get('to')
+    if to_date_param:
+       to_date = datetime.strptime(to_date_param, '%Y%m%d')
+      
+    from_date = to_date - timedelta(weeks = 1)
+    from_date_param = request.args.get('from')
+    if from_date_param:
+       from_date = datetime.strptime(from_date_param, '%Y%m%d')
+       
+    if from_date > to_date:
+       stash = from_date
+       from_date = to_date
+       to_date = stash
+    
+    query = """
+        SELECT sum(tweet_count) AS tweet_count
+        FROM sentiment
+        WHERE datetime >= '{}'
+        AND datetime <= '{}'
+    """.format(from_date, to_date)
+
+    result = g.db.query(query)
+    payload = []
+    for row in result:
+        payload.append(row['tweet_count'])
 
     return jsonify({'data': payload})
