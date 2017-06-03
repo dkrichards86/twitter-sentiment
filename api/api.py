@@ -6,6 +6,7 @@ from datetime import datetime, timedelta, date
 import dataset
 import decimal
 import configparser
+from statistics import mean
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -62,6 +63,9 @@ def crossdomain(origin=None, methods=None, headers=None, max_age=21600, attach_t
         return update_wrapper(wrapped_function, f)
     return decorator
 
+def _roundTime(dt):
+    return datetime(dt.year, dt.month, dt.day, dt.hour, 15 * (dt.minute // 15))
+
 app = Flask(__name__)
 app.json_encoder = CustomJSONEncoder
 
@@ -75,7 +79,7 @@ def before_request():
 @app.route('/', methods=['GET'])
 @crossdomain(origin='*')
 def index():
-    to_date = datetime.now()
+    to_date = _roundTime(datetime.now())
     to_date_param = request.args.get('to')
     if to_date_param:
        to_date = datetime.strptime(to_date_param, '%Y%m%d')
@@ -99,10 +103,21 @@ def index():
 
     result = g.db.query(query)
     payload = []
+    polarity = []
     for row in result:
         payload.append(row)
+        polarity.append(row['polarity'])
 
-    return jsonify({'data': payload})
+    mean_polarity = mean([row['polarity'] for row in payload])
+    total_counts = sum([row['tweet_count'] for row in payload])
+
+    return jsonify({
+        'data': payload,
+        'count': total_counts,
+        'avg': mean_polarity,
+        'start_datetime': from_date,
+        'end_datetime': to_date
+    })
 
 @app.route('/average_polarity', methods=['GET'])
 @crossdomain(origin='*')
