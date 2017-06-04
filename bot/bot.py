@@ -63,12 +63,16 @@ class TweetBot():
     def write_stats(self, stats):
         avg = round(stats['avg'], 2)
         count = "{:,}".format(stats['count'])
-        
-        status = "Presidential Polarity Daily Brief- {}% average sentiment from {} tweets.".format(avg, count)
+
+	status_head = "[Presidential Polarity]"
+	status_tail = "#presidentialpolarity http://polarity.dkrichards.com"
+
+        status_body = "Daily Brief- {}% average sentiment from {} tweets.".format(avg, count)
         
         if self.stat_type == 'weekly':
-            status = "Presidential Polarity week in review- {} tweets collected, {}% average sentiment".format(count, avg)
+            status_body = "Week in Review- {} tweets collected, {}% average sentiment".format(count, avg)
         
+	status = "{} {} {}".format(status_head, status_body, status_tail)
         self.api.update_status(status)
 
     def run(self):
