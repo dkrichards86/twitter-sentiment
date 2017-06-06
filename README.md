@@ -11,7 +11,7 @@ We use the great [Tweepy](http://www.tweepy.org/) library as the platform's foun
 ### Processor
 The processor conducts sentiment analysis on a batch of tweets and writes them to the database.
 
-Sentiment is scored using [NLTK's](http://www.nltk.org/) Vader Sentiment Analysis tool.
+Sentiment is scored using [Vader Sentiment Analysis](http://comp.social.gatech.edu/papers/icwsm14.vader.hutto.pdf) implemented in [NLTK](http://www.nltk.org/).
 
 ### API
 The sentiment API serves tweet polarity to the frontend.  
