@@ -18,6 +18,11 @@ The sentiment API serves tweet polarity to the frontend.
 
 The API is built on [Flask](http://flask.pocoo.org/) and connects to a SQLite3 database.
 
+### Bot
+The sentiment Bot publishes stats to Twitter on a cron.  
+
+[Tweepy](http://www.tweepy.org/) is used to handle publishing.
+
 ## Usage
 This platform is built on [Python3](https://www.python.org/download/releases/3.0/). This assumes
 you have a Python3 environment enabled.
