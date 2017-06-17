@@ -65,7 +65,7 @@ class TweetBot():
         count = "{:,}".format(stats['count'])
 
 	status_head = "[Presidential Polarity]"
-	status_tail = "#presidentialpolarity http://polarity.dkrichards.com"
+	status_tail = "@potus #presidentialpolarity http://polarity.dkrichards.com"
 
         status_body = "Daily Brief- {}% average sentiment from {} tweets.".format(avg, count)
         
