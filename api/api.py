@@ -108,7 +108,7 @@ def index():
         payload.append(row)
         polarity.append(row['polarity'])
 
-    mean_polarity = mean([row['polarity'] for row in payload])
+    mean_polarity = round(mean([row['polarity'] for row in payload]), 2)
     total_counts = sum([row['tweet_count'] for row in payload])
 
     return jsonify({
