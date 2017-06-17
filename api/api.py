@@ -114,7 +114,7 @@ def index():
     return jsonify({
         'data': payload,
         'count': total_counts,
-        'avg': mean_polarity,
+        'avg': round(mean_polarity, 2),
         'start_datetime': from_date,
         'end_datetime': to_date
     })
